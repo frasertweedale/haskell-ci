@@ -113,6 +113,13 @@ makeGitHub _argv config@Config {..} gitconfig prj jobs@JobVersions {..} = do
             [ "Using submodules on the GitHub Actions backend requires"
             , "Ubuntu 20.04 (Focal Fossa) or later."
             ]
+    when (length matrix > maxMatrixJobs) $
+        throwErr $ ValidationError $ unwords
+            [ "The matrix has"
+            , show (length matrix)
+            , "jobs, exceeding the limit of"
+            , show maxMatrixJobs ++ "."
+            ]
 
     steps <- sequence $ buildList $ do
         -- This have to be first, since the packages we install depend on
@@ -911,3 +918,9 @@ parseGitHubRepo t =
 -- runners support.
 ghcRunsOnVer :: String
 ghcRunsOnVer = "ubuntu-20.04"
+
+-- | GitHub has a limit of 256 jobs.
+-- See https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#using-a-matrix-strategy
+--
+maxMatrixJobs :: Int
+maxMatrixJobs = 256

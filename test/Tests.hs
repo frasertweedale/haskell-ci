@@ -31,6 +31,7 @@ main = do
         , fixtureGoldenTest "travis-patch"
         , fixtureGoldenTest "enabled-jobs"
         , fixtureGoldenTest "matrix-extra"
+        , fixtureGoldenTest "matrix-extra-toomany"
         , testGroup "copy-fields"
             [ fixtureGoldenTest "copy-fields-all"
             , fixtureGoldenTest "copy-fields-some"
